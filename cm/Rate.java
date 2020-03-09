@@ -100,12 +100,12 @@ public class Rate {
         int normalRateHours = periodStay.occurences(normal);
         int reducedRateHours = periodStay.occurences(reduced);
 
-        BigDecimal result = BigDecimal.ZERO;
+        BigDecimal result;
         if (kind == CarParkKind.VISITOR) {
             result = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
                 this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
 
-            if (result.compareTo(BigDecimal.valueOf(8)) == 0) {
+            if (result.compareTo(BigDecimal.valueOf(8)) <= 0) {
                 return BigDecimal.ZERO;
             } else {
                 return (result.subtract(BigDecimal.valueOf(8)).divide(BigDecimal.valueOf(2)));

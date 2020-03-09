@@ -617,4 +617,67 @@ public class LukoseviciusMartynasTestTask2 {
 
         Rate rate = new Rate(carParkKind, normalRate, reducedRate, reducedPeriods, normalPeriods);
     }
+
+    @Test
+    public void visitorChargeLessThanOrEqual8() {
+        CarParkKind carParkKind = CarParkKind.VISITOR;
+        BigDecimal normalRate = BigDecimal.valueOf(1);
+        BigDecimal reducedRate = BigDecimal.valueOf(1);
+
+        ArrayList<Period> reducedPeriods = new ArrayList<Period>();
+        ArrayList<Period> normalPeriods = new ArrayList<Period>();
+
+        Period normalPeriod = new Period(9, 16);
+        Period reducedPeriod = new Period(16, 20);
+        Period periodStay = new Period(9, 14);
+
+        normalPeriods.add(normalPeriod);
+        reducedPeriods.add(reducedPeriod);
+
+        Rate rate = new Rate(carParkKind, normalRate, reducedRate, reducedPeriods, normalPeriods);
+        BigDecimal expected = BigDecimal.ZERO;
+        assertEquals(rate.calculate(periodStay), expected);
+    }
+
+    @Test
+    public void visitorChargeEqual8() {
+        CarParkKind carParkKind = CarParkKind.VISITOR;
+        BigDecimal normalRate = BigDecimal.valueOf(2);
+        BigDecimal reducedRate = BigDecimal.valueOf(1);
+
+        ArrayList<Period> reducedPeriods = new ArrayList<Period>();
+        ArrayList<Period> normalPeriods = new ArrayList<Period>();
+
+        Period normalPeriod = new Period(9, 16);
+        Period reducedPeriod = new Period(16, 20);
+        Period periodStay = new Period(9, 13);
+
+        normalPeriods.add(normalPeriod);
+        reducedPeriods.add(reducedPeriod);
+
+        Rate rate = new Rate(carParkKind, normalRate, reducedRate, reducedPeriods, normalPeriods);
+        BigDecimal expected = BigDecimal.ZERO;
+        assertEquals(rate.calculate(periodStay), expected);
+    }
+
+    @Test
+    public void visitorChargeGreaterThan8() {
+        CarParkKind carParkKind = CarParkKind.VISITOR;
+        BigDecimal normalRate = BigDecimal.valueOf(3);
+        BigDecimal reducedRate = BigDecimal.valueOf(1);
+
+        ArrayList<Period> reducedPeriods = new ArrayList<Period>();
+        ArrayList<Period> normalPeriods = new ArrayList<Period>();
+
+        Period normalPeriod = new Period(9, 16);
+        Period reducedPeriod = new Period(16, 20);
+        Period periodStay = new Period(9, 13);
+
+        normalPeriods.add(normalPeriod);
+        reducedPeriods.add(reducedPeriod);
+
+        Rate rate = new Rate(carParkKind, normalRate, reducedRate, reducedPeriods, normalPeriods);
+        BigDecimal expected = BigDecimal.valueOf(2);
+        assertEquals(rate.calculate(periodStay), expected);
+    }
 }
