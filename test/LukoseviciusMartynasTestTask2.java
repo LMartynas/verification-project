@@ -478,6 +478,27 @@ public class LukoseviciusMartynasTestTask2 {
         assertEquals(rate.calculate(periodStay), expectedCharge);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void periodsOverlap() {
+        CarParkKind carParkKind = CarParkKind.MANAGEMENT;
+        BigDecimal normalRate = BigDecimal.valueOf(6);
+        BigDecimal reducedRate = BigDecimal.valueOf(5);
+
+        ArrayList<Period> reducedPeriods = new ArrayList<Period>();
+        ArrayList<Period> normalPeriods = new ArrayList<Period>();
+
+        Period reducedPeriod1 = new Period(13, 8);
+        Period reducedPeriod2 = new Period(12, 7);
+        Period normalPeriod1 = new Period(11, 6);
+        Period normalPeriod2 = new Period(19, 5);
+
+        reducedPeriods.add(reducedPeriod1);
+        reducedPeriods.add(reducedPeriod2);
+        normalPeriods.add(normalPeriod1);
+        normalPeriods.add(normalPeriod2);
+
+        Rate rate = new Rate(carParkKind, normalRate, reducedRate, reducedPeriods, normalPeriods);
+    }
 
 
 
