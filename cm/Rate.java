@@ -119,7 +119,7 @@ public class Rate {
         if (kind == CarParkKind.STUDENT) {
             result = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
                     this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
-            return result.compareTo(BigDecimal.valueOf(5.5)) > 0 ? result.multiply(BigDecimal.valueOf(0.75)) : result;
+            return result.compareTo(BigDecimal.valueOf(5.50)) > 0 ? result.multiply(BigDecimal.valueOf(0.75)) : result;
         }
         if (kind == CarParkKind.STAFF) {
             result = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
