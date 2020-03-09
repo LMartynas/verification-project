@@ -302,7 +302,7 @@ public class LukoseviciusMartynasTestTask2 {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void periodStayNotNull() {
+    public void periodStayIsNull() {
         CarParkKind carParkKind = CarParkKind.MANAGEMENT;
         BigDecimal normalRate = BigDecimal.valueOf(6);
         BigDecimal reducedRate = BigDecimal.valueOf(5);
@@ -587,6 +587,24 @@ public class LukoseviciusMartynasTestTask2 {
         CarParkKind carParkKind = CarParkKind.MANAGEMENT;
         BigDecimal normalRate = BigDecimal.valueOf(0);
         BigDecimal reducedRate = BigDecimal.valueOf(0);
+
+        ArrayList<Period> reducedPeriods = new ArrayList<Period>();
+        ArrayList<Period> normalPeriods = new ArrayList<Period>();
+
+        Period reducedPeriod = new Period(1, 5);
+        Period normalPeriod = new Period(5, 6);
+
+        reducedPeriods.add(reducedPeriod);
+        normalPeriods.add(normalPeriod);
+
+        Rate rate = new Rate(carParkKind, normalRate, reducedRate, reducedPeriods, normalPeriods);
+    }
+
+    @Test
+    public void normalRateIsZero2() {
+        CarParkKind carParkKind = CarParkKind.MANAGEMENT;
+        BigDecimal normalRate = BigDecimal.valueOf(0);
+        BigDecimal reducedRate = BigDecimal.valueOf(1);
 
         ArrayList<Period> reducedPeriods = new ArrayList<Period>();
         ArrayList<Period> normalPeriods = new ArrayList<Period>();
