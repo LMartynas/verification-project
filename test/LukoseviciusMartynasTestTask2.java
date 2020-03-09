@@ -301,7 +301,7 @@ public class LukoseviciusMartynasTestTask2 {
         Rate rate = new Rate(carParkKind, normalRate, reducedRate, reducedPeriods, normalPeriods);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void periodStayNotNull() {
         CarParkKind carParkKind = CarParkKind.MANAGEMENT;
         BigDecimal normalRate = BigDecimal.valueOf(6);
@@ -479,7 +479,7 @@ public class LukoseviciusMartynasTestTask2 {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void periodsOverlap() {
+    public void periodsOverlapInternally() {
         CarParkKind carParkKind = CarParkKind.MANAGEMENT;
         BigDecimal normalRate = BigDecimal.valueOf(6);
         BigDecimal reducedRate = BigDecimal.valueOf(5);
@@ -487,22 +487,134 @@ public class LukoseviciusMartynasTestTask2 {
         ArrayList<Period> reducedPeriods = new ArrayList<Period>();
         ArrayList<Period> normalPeriods = new ArrayList<Period>();
 
-        Period reducedPeriod1 = new Period(13, 8);
-        Period reducedPeriod2 = new Period(12, 7);
-        Period normalPeriod1 = new Period(11, 6);
-        Period normalPeriod2 = new Period(19, 5);
+        Period reducedPeriod1 = new Period(1, 5);
+        Period reducedPeriod2 = new Period(4, 7);
+        Period reducedPeriod3 = new Period(6, 13);
+        Period normalPeriod1 = new Period(12, 16);
+        Period normalPeriod2 = new Period(15, 20);
+        Period normalPeriod3 = new Period(19, 23);
 
         reducedPeriods.add(reducedPeriod1);
         reducedPeriods.add(reducedPeriod2);
+        reducedPeriods.add(reducedPeriod3);
         normalPeriods.add(normalPeriod1);
         normalPeriods.add(normalPeriod2);
+        normalPeriods.add(normalPeriod3);
 
         Rate rate = new Rate(carParkKind, normalRate, reducedRate, reducedPeriods, normalPeriods);
     }
 
+    @Test
+    public void periodsDoNotOverlap() {
+        CarParkKind carParkKind = CarParkKind.MANAGEMENT;
+        BigDecimal normalRate = BigDecimal.valueOf(6);
+        BigDecimal reducedRate = BigDecimal.valueOf(5);
 
+        ArrayList<Period> reducedPeriods = new ArrayList<Period>();
+        ArrayList<Period> normalPeriods = new ArrayList<Period>();
 
+        Period reducedPeriod1 = new Period(1, 5);
+        Period reducedPeriod2 = new Period(5, 7);
+        Period reducedPeriod3 = new Period(7, 12);
+        Period normalPeriod1 = new Period(12, 16);
+        Period normalPeriod2 = new Period(16, 20);
+        Period normalPeriod3 = new Period(20, 23);
 
+        reducedPeriods.add(reducedPeriod1);
+        reducedPeriods.add(reducedPeriod2);
+        reducedPeriods.add(reducedPeriod3);
+        normalPeriods.add(normalPeriod1);
+        normalPeriods.add(normalPeriod2);
+        normalPeriods.add(normalPeriod3);
 
+        Rate rate = new Rate(carParkKind, normalRate, reducedRate, reducedPeriods, normalPeriods);
+    }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void periodsOverlapExternally() {
+        CarParkKind carParkKind = CarParkKind.MANAGEMENT;
+        BigDecimal normalRate = BigDecimal.valueOf(6);
+        BigDecimal reducedRate = BigDecimal.valueOf(5);
+
+        ArrayList<Period> reducedPeriods = new ArrayList<Period>();
+        ArrayList<Period> normalPeriods = new ArrayList<Period>();
+
+        Period reducedPeriod1 = new Period(1, 5);
+        Period reducedPeriod2 = new Period(2, 5);
+        Period reducedPeriod3 = new Period(3, 5);
+        Period normalPeriod1 = new Period(4, 5);
+        Period normalPeriod2 = new Period(5, 5);
+        Period normalPeriod3 = new Period(5, 5);
+
+        reducedPeriods.add(reducedPeriod1);
+        reducedPeriods.add(reducedPeriod2);
+        reducedPeriods.add(reducedPeriod3);
+        normalPeriods.add(normalPeriod1);
+        normalPeriods.add(normalPeriod2);
+        normalPeriods.add(normalPeriod3);
+
+        Rate rate = new Rate(carParkKind, normalRate, reducedRate, reducedPeriods, normalPeriods);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void reducedAndNormalOverlapMultiplePeriods() {
+        CarParkKind carParkKind = CarParkKind.MANAGEMENT;
+        BigDecimal normalRate = BigDecimal.valueOf(5);
+        BigDecimal reducedRate = BigDecimal.valueOf(2);
+
+        ArrayList<Period> reducedPeriods = new ArrayList<Period>();
+        ArrayList<Period> normalPeriods = new ArrayList<Period>();
+
+        Period normalPeriod = new Period(0, 3);
+        Period normalPeriod2 = new Period(4, 6);
+        Period normalPeriod3 = new Period(7, 9);
+        Period reducedPeriod = new Period(8, 12);
+        Period reducedPeriod2 = new Period(13, 15);
+        Period reducedPeriod3 = new Period(16, 21);
+
+        normalPeriods.add(normalPeriod);
+        normalPeriods.add(normalPeriod2);
+        normalPeriods.add(normalPeriod3);
+        reducedPeriods.add(reducedPeriod);
+        reducedPeriods.add(reducedPeriod2);
+        reducedPeriods.add(reducedPeriod3);
+
+        Rate rate = new Rate(carParkKind, normalRate, reducedRate, reducedPeriods, normalPeriods);
+    }
+
+    @Test
+    public void normalRateIsZero() {
+        CarParkKind carParkKind = CarParkKind.MANAGEMENT;
+        BigDecimal normalRate = BigDecimal.valueOf(0);
+        BigDecimal reducedRate = BigDecimal.valueOf(0);
+
+        ArrayList<Period> reducedPeriods = new ArrayList<Period>();
+        ArrayList<Period> normalPeriods = new ArrayList<Period>();
+
+        Period reducedPeriod = new Period(1, 5);
+        Period normalPeriod = new Period(5, 6);
+
+        reducedPeriods.add(reducedPeriod);
+        normalPeriods.add(normalPeriod);
+
+        Rate rate = new Rate(carParkKind, normalRate, reducedRate, reducedPeriods, normalPeriods);
+    }
+
+    @Test
+    public void reducecdRateIsZero() {
+        CarParkKind carParkKind = CarParkKind.MANAGEMENT;
+        BigDecimal normalRate = BigDecimal.valueOf(1);
+        BigDecimal reducedRate = BigDecimal.valueOf(0);
+
+        ArrayList<Period> reducedPeriods = new ArrayList<Period>();
+        ArrayList<Period> normalPeriods = new ArrayList<Period>();
+
+        Period reducedPeriod = new Period(1, 5);
+        Period normalPeriod = new Period(5, 6);
+
+        reducedPeriods.add(reducedPeriod);
+        normalPeriods.add(normalPeriod);
+
+        Rate rate = new Rate(carParkKind, normalRate, reducedRate, reducedPeriods, normalPeriods);
+    }
 }
