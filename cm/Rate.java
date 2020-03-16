@@ -92,6 +92,7 @@ public class Rate {
         }
         return isValid;
     }
+
     public BigDecimal calculate(Period periodStay) {
         if (periodStay == null) {
             throw new IllegalArgumentException("Period stay cannot be null");
@@ -100,33 +101,21 @@ public class Rate {
         int normalRateHours = periodStay.occurences(normal);
         int reducedRateHours = periodStay.occurences(reduced);
 
-        BigDecimal result;
-        if (kind == CarParkKind.VISITOR) {
-            result = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
+        BigDecimal result = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
                 this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
 
-            if (result.compareTo(BigDecimal.valueOf(8)) <= 0) {
-                return BigDecimal.ZERO;
-            } else {
-                return (result.subtract(BigDecimal.valueOf(8)).divide(BigDecimal.valueOf(2)));
-            }
+        if (kind == CarParkKind.VISITOR) {
+            return result.compareTo(BigDecimal.valueOf(8)) <= 0 ? BigDecimal.ZERO : result.subtract(BigDecimal.valueOf(8)).divide(BigDecimal.valueOf(2));
         }
         if (kind == CarParkKind.MANAGEMENT) {
-            result = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
-                    this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
             return result.compareTo(BigDecimal.valueOf(3)) <= 0 ? BigDecimal.valueOf(3) : result;
         }
         if (kind == CarParkKind.STUDENT) {
-            result = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
-                    this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
             return result.compareTo(BigDecimal.valueOf(5.50)) > 0 ? result.multiply(BigDecimal.valueOf(0.75)) : result;
         }
         if (kind == CarParkKind.STAFF) {
-            result = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
-                    this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
             return result.compareTo(BigDecimal.valueOf(16)) < 0 ? result : BigDecimal.valueOf(16);
         }
         return BigDecimal.ZERO;
     }
-
 }
